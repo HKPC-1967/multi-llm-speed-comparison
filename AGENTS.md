@@ -16,6 +16,13 @@ This project benchmarks LLM response latency and output token throughput across 
 - `.env`: local secret file ignored by git.
 - `README.md`: user-facing setup, run, and extension instructions.
 
+## Provider Clients
+
+- `AzureOpenAIClient`: Azure OpenAI chat completions deployment URL.
+- `AzureFoundryClient`: Azure AI Foundry chat completions URL.
+- `AzureFoundryOpenAIClient`: Azure AI Foundry OpenAI Responses API URL, currently used by GPT-5.4 Mini.
+- `OpenAICompatibleClient`: OpenAI-compatible chat completions URL, currently used by Alibaba Cloud DashScope.
+
 ## Architecture Rules
 
 - Keep dependencies pinned with `==` in `pyproject.toml`.

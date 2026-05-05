@@ -39,35 +39,35 @@ BENCHMARK_TASKS = [
 ]
 
 MODEL_CONFIGS = [
-    # ModelConfig(
-    #     display_name="Azure OpenAI GPT-4.1",
-    #     provider="azure_openai",
-    #     endpoint_env="AZURE_OPENAI_ENDPOINT",
-    #     api_key_env="AZURE_OPENAI_API_KEY",
-    #     model_env="AZURE_OPENAI_GPT41_DEPLOYMENT",
-    #     api_version_env="AZURE_OPENAI_API_VERSION",
-    # ),
     ModelConfig(
-        display_name="Azure AI Foundry GPT-5.4 Mini",
-        provider="azure_foundry",
-        endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
+        display_name="Azure OpenAI GPT-4.1 (westus3 Global Stadard)",
+        provider="azure_openai",
+        endpoint_env="AZURE_OPENAI_ENDPOINT",
         api_key_env="AZURE_OPENAI_API_KEY",
+        model_env="AZURE_OPENAI_GPT41_DEPLOYMENT",
+        api_version_env="AZURE_OPENAI_API_VERSION",
+    ),
+    ModelConfig(
+        display_name="Azure AI Foundry GPT-5.4 Mini (westus3 Global Stadard)",
+        provider="azure_foundry_openai",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
         model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_5_1_mini",
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
-    # ModelConfig(
-    #     display_name="Azure AI Foundry DeepSeek-V4-Flash",
-    #     provider="azure_foundry",
-    #     endpoint_env="AZURE_FOUNDRY_ENDPOINT",
-    #     api_key_env="AZURE_FOUNDRY_API_KEY",
-    #     model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL",
-    #     api_version_env="AZURE_FOUNDRY_API_VERSION",
-    # ),
-    # ModelConfig(
-    #     display_name="Alibaba Cloud DeepSeek-V4-Flash",
-    #     provider="openai_compatible",
-    #     endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
-    #     api_key_env="ALIBABA_CLOUD_API_KEY",
-    #     model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
-    # ),
+    ModelConfig(
+        display_name="Azure AI Foundry DeepSeek-V4-Flash (westus3 Global Stadard)",
+        provider="azure_foundry",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
+        model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL",
+        api_version_env="AZURE_FOUNDRY_API_VERSION",
+    ),
+    ModelConfig(
+        display_name="Alibaba Cloud DeepSeek-V4-Flash (Germany)",
+        provider="openai_compatible",
+        endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
+        api_key_env="ALIBABA_CLOUD_API_KEY",
+        model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
+    ),
 ]

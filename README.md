@@ -7,7 +7,7 @@ This Python project benchmarks response time and output token throughput for mul
 The initial configuration includes:
 
 - Azure OpenAI GPT-4.1
-- Azure AI Foundry GPT-5.4 Mini
+- Azure AI Foundry GPT-5.4 Mini through the OpenAI Responses API
 - Azure AI Foundry DeepSeek-V4-Flash
 - Alibaba Cloud DeepSeek-V4-Flash through DashScope's OpenAI-compatible API
 
@@ -87,3 +87,10 @@ The provider design is split into configuration and request clients:
 - Update this README and `AGENTS.md` whenever the architecture or startup steps change.
 
 This keeps provider-specific request code isolated while the benchmark runner and Excel writer stay unchanged.
+
+Current provider strings:
+
+- `azure_openai`: Azure OpenAI chat completions deployment URL.
+- `azure_foundry`: Azure AI Foundry chat completions URL.
+- `azure_foundry_openai`: Azure AI Foundry OpenAI Responses API URL, currently used by GPT-5.4 Mini.
+- `openai_compatible`: OpenAI-compatible chat completions URL, currently used by Alibaba Cloud DashScope.

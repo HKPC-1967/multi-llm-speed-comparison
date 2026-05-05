@@ -29,6 +29,8 @@ class ModelClient(Protocol):
 def build_client(config: ModelConfig) -> ModelClient:
     if config.provider == "azure_openai":
         return AzureOpenAIClient(config)
+    if config.provider == "azure_foundry_openai":
+        return AzureFoundryOpenAIClient(config)
     if config.provider == "azure_foundry":
         return AzureFoundryClient(config)
     if config.provider == "openai_compatible":
@@ -96,6 +98,19 @@ class AzureFoundryClient(BaseRequestsClient):
         )
 
 
+class AzureFoundryOpenAIClient(BaseRequestsClient):
+    """Azure AI Foundry OpenAI Responses API endpoint."""
+
+    def complete(self, prompt: str) -> ModelResponse:
+        query = urlencode({"api-version": self.api_version})
+        url = f"{self.endpoint}/openai/responses?{query}"
+        return self._post(
+            url=url,
+            headers={"api-key": self.api_key, "Content-Type": "application/json"},
+            payload=_responses_payload(model=self.model, prompt=prompt),
+        )
+
+
 class OpenAICompatibleClient(BaseRequestsClient):
     """OpenAI-compatible chat completions client, used by Alibaba Cloud DashScope."""
 
@@ -124,6 +139,14 @@ def _chat_payload(prompt: str) -> dict[str, Any]:
     }
 
 
+def _responses_payload(model: str, prompt: str) -> dict[str, Any]:
+    return {
+        "model": model,
+        "input": prompt,
+        "temperature": 0,
+    }
+
+
 def _env(name: str | None) -> str:
     if not name:
         msg = "Internal error: env var name is missing."
@@ -136,6 +159,23 @@ def _env(name: str | None) -> str:
 
 
 def _extract_text(data: dict[str, Any]) -> str:
+    output_text = data.get("output_text")
+    if isinstance(output_text, str):
+        return output_text
+
+    output = data.get("output")
+    if isinstance(output, list):
+        extracted_parts: list[str] = []
+        for item in output:
+            if not isinstance(item, dict):
+                continue
+            content = item.get("content")
+            if not isinstance(content, list):
+                continue
+            extracted_parts.extend(_extract_content_parts(content))
+        if extracted_parts:
+            return "".join(extracted_parts)
+
     choices = data.get("choices") or []
     if not choices:
         return ""
@@ -146,10 +186,19 @@ def _extract_text(data: dict[str, Any]) -> str:
     if isinstance(content, str):
         return content
     if isinstance(content, list):
-        return "".join(
-            part.get("text", "") for part in content if isinstance(part, dict)
-        )
+        return "".join(_extract_content_parts(content))
     return str(content or "")
+
+
+def _extract_content_parts(content: list[Any]) -> list[str]:
+    parts: list[str] = []
+    for part in content:
+        if not isinstance(part, dict):
+            continue
+        text = part.get("text")
+        if isinstance(text, str):
+            parts.append(text)
+    return parts
 
 
 def _extract_output_tokens(data: dict[str, Any]) -> int | None:
