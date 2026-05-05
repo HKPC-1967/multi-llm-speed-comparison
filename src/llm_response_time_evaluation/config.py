@@ -28,12 +28,12 @@ class ModelConfig:
 # BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here")
 # BenchmarkTask(name="2k", prompt="paste roughly 2k tokens here")
 BENCHMARK_TASKS = [
-    # BenchmarkTask(
-    #     name="0.01k",
-    #     prompt="what model are you?",
-    # ),
     BenchmarkTask(
-        name="2576 words input",
+        name="Simple Question",
+        prompt="what model are you?",
+    ),
+    BenchmarkTask(
+        name="Summarize 2.5K words to 300 words",
         prompt="what model are you?",
     ),
 ]
