@@ -30,11 +30,7 @@ class ModelConfig:
 # BenchmarkTask(name="5k", prompt="paste roughly 5k tokens here")
 BENCHMARK_TASKS = [
     BenchmarkTask(
-        name="Simple Task",
-        prompt="what model are you?",
-    ),
-    BenchmarkTask(
-        name="Summarize 1.7K words to 200",
+        name="Summarize 1.7K words to 200 words",
         prompt="""
 Please read the provided article regarding the evolution of human communication from the Stone Age to the Silicon Age. Your task is to summarize this text into exactly 200 words. The summary must capture the central thesis of each section, maintain the chronological flow, and accurately reflect the author's concluding thoughts on the future of neural interfaces. Do not include personal opinions or outside information. Focus strictly on the provided text.
 Below is the source text intended for this evaluation.
@@ -71,6 +67,10 @@ Language is, effectively, a compression algorithm. We take complex thoughts and 
 This potential future raises profound ethical and philosophical questions. If our thoughts can be transmitted or accessed digitally, what happens to the concept of privacy? If we can offload our memory to the cloud, how does that change our sense of self? We are standing on the precipice of a new evolutionary step, one where the tool of communication may no longer be something we hold in our hands, but something we become.
         """,
     ),
+    BenchmarkTask(
+        name="Simple Question",
+        prompt="what model are you?",
+    ),
 ]
 
 # Number of calls per model/task pair. The final Excel value is the average.
@@ -81,53 +81,53 @@ TEMPERATURE = 0
 
 
 MODEL_CONFIGS = [
-    # ModelConfig(
-    #     display_name="GPT-4.1 - Azure OpenAI - westus3 Global Standard",
-    #     provider="azure_openai",
-    #     endpoint_env="AZURE_OPENAI_ENDPOINT",
-    #     api_key_env="AZURE_OPENAI_API_KEY",
-    #     model_env="AZURE_OPENAI_GPT41_DEPLOYMENT",
-    #     api_version_env="AZURE_OPENAI_API_VERSION",
-    # ),
-    # ModelConfig(
-    #     display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard",
-    #     provider="azure_foundry_openai",
-    #     endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
-    #     api_key_env="AZURE_FOUNDRY_API_KEY",
-    #     model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI",
-    #     api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
-    # ),
-    # ModelConfig(
-    #     display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard - Priority",
-    #     provider="azure_foundry_openai",
-    #     endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
-    #     api_key_env="AZURE_FOUNDRY_API_KEY",
-    #     model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_priority",
-    #     api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
-    # ),
-    # ModelConfig(
-    #     display_name="DeepSeek-V4-Flash - Azure AI Foundry - westus3 Global Standard",
-    #     provider="azure_foundry",
-    #     endpoint_env="AZURE_FOUNDRY_ENDPOINT",
-    #     api_key_env="AZURE_FOUNDRY_API_KEY",
-    #     model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL",
-    #     api_version_env="AZURE_FOUNDRY_API_VERSION",
-    # ),
-    # ModelConfig(
-    #     display_name="DeepSeek-V4-Flash - Azure AI Foundry - koreacentral Global Standard",
-    #     provider="azure_foundry",
-    #     endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
-    #     api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
-    #     model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL_KOREA_CENTRAL",
-    #     api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
-    # ),
-    # ModelConfig(
-    #     display_name="DeepSeek-V4-Flash - Alibaba Cloud - Germany",
-    #     provider="openai_compatible",
-    #     endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
-    #     api_key_env="ALIBABA_CLOUD_API_KEY",
-    #     model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
-    # ),
+    ModelConfig(
+        display_name="GPT-4.1 - Azure OpenAI - westus3 Global Standard",
+        provider="azure_openai",
+        endpoint_env="AZURE_OPENAI_ENDPOINT",
+        api_key_env="AZURE_OPENAI_API_KEY",
+        model_env="AZURE_OPENAI_GPT41_DEPLOYMENT",
+        api_version_env="AZURE_OPENAI_API_VERSION",
+    ),
+    ModelConfig(
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard",
+        provider="azure_foundry_openai",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
+        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI",
+        api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
+    ),
+    ModelConfig(
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard - Priority",
+        provider="azure_foundry_openai",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
+        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_priority",
+        api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
+    ),
+    ModelConfig(
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - westus3 Global Standard",
+        provider="azure_foundry",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
+        model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL",
+        api_version_env="AZURE_FOUNDRY_API_VERSION",
+    ),
+    ModelConfig(
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - koreacentral Global Standard",
+        provider="azure_foundry",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
+        api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
+        model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL_KOREA_CENTRAL",
+        api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
+    ),
+    ModelConfig(
+        display_name="DeepSeek-V4-Flash - Alibaba Cloud - Germany",
+        provider="openai_compatible",
+        endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
+        api_key_env="ALIBABA_CLOUD_API_KEY",
+        model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
+    ),
     ModelConfig(
         display_name="DeepSeek-V4-Flash - Aliyun - China",
         provider="openai_compatible",

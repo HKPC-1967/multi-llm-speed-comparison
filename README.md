@@ -3,7 +3,7 @@
 `multi-llm-speed-comparison` evaluates response speed for multiple LLM models across providers. 
 ![summary.png](readme/images/summary.png)
 ![detail.png](readme/images/detail.png)
-![Tasks.png](readme/images/Tasks.png)  
+![tasks.png](readme/images/tasks.png)  
 This Excel file is an output example: [llm_evaluation_output_example.xlsx](llm_evaluation_output_example.xlsx)
 ## 1. Setup
 
