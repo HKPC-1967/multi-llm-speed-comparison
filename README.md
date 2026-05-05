@@ -1,6 +1,6 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` evaluates response speed for multiple LLM models across providers. 
+`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLM models across providers. 
 ![summary.png](readme/images/summary.png)
 ![detail.png](readme/images/detail.png)
 ![tasks.png](readme/images/tasks.png)  
@@ -41,13 +41,13 @@ uv run python -m multi_llm_speed_comparison
 ## 3. Customization Details
 ### Configure Benchmark Inputs
 
-Edit `src/multi_llm_speed_comparison/config.py`.
+Edit [src/multi_llm_speed_comparison/config.py](src/multi_llm_speed_comparison/config.py).
 
 The main values are near the top of the file:
 
 - `RUNS_PER_MODEL`: how many calls to make for each model/task pair before averaging.
 - `TEMPERATURE`: sampling temperature used for all model calls. The default is `0`.
-- `BENCHMARK_TASKS`: named prompt tasks, such as `0.01k`, `1k`, or `2k`.
+- `BENCHMARK_TASKS`: named prompt tasks.
 - `MODEL_CONFIGS`: the models to benchmark and the environment variables they use.
 
 Example task addition:
@@ -59,22 +59,6 @@ BENCHMARK_TASKS = [
 ]
 ```
 
-### Output Format
-
-The Excel workbook has `Summary`, `Details`, and `Tasks` sheets.
-
-The `Summary` sheet has the model name in the first column. Its header uses two rows: each task name is shown once in a merged cell, and the second header row shows three metric columns:
-
-- `response time`
-- `output tokens`
-- `token/second`
-
-For example, tasks named `1k` and `2k` each appear once as merged top-level headers, with their metrics below.
-
-The `Details` sheet records each individual call with model name, task name, run number, response time, output token count, token/second, full answer text, and error message if the call failed.
-
-The `Tasks` sheet records the configured benchmark task name, original prompt, and temperature.
-
 ### Extending Providers
 
 The provider design is split into configuration and request clients:
@@ -83,7 +67,6 @@ The provider design is split into configuration and request clients:
 - Add a new client class in `src/multi_llm_speed_comparison/clients.py` when the platform has a different URL shape, authentication method, request body, or response body.
 - Register the new provider string in `build_client()`.
 - Add matching placeholder variables to `.env.copy`.
-- Update this README and `AGENTS.md` whenever the architecture or startup steps change.
 
 This keeps provider-specific request code isolated while the benchmark runner and Excel writer stay unchanged.
 
