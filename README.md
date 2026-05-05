@@ -69,12 +69,16 @@ BENCHMARK_TASKS = [
 
 ## Output Format
 
-The Excel workbook has a `Summary` sheet. The first column is the model name. Each benchmark task adds two columns:
+The Excel workbook has a `Summary` sheet and a `Details` sheet.
+
+The `Summary` sheet has the model name in the first column. Each benchmark task adds two columns:
 
 - `<task name>-response time`
 - `<task name>-token/second`
 
 For example, tasks named `1k` and `2k` produce columns like `1k-response time`, `1k-token/second`, `2k-response time`, and `2k-token/second`.
+
+The `Details` sheet records each individual call with model name, task name, run number, response time, output token count, token/second, full answer text, and error message if the call failed.
 
 ## Extending Providers
 

@@ -4,7 +4,7 @@ Use this guide to understand and modify the project safely.
 
 ## Project Purpose
 
-This project benchmarks LLM response latency and output token throughput across several cloud providers. It exports one Excel workbook where rows are models and columns are task metrics.
+This project benchmarks LLM response latency and output token throughput across several cloud providers. It exports one Excel workbook with a summary sheet and a per-call details sheet.
 
 ## Main Files
 
@@ -30,7 +30,8 @@ This project benchmarks LLM response latency and output token throughput across 
 - Keep all documentation, code comments, and user-facing strings in English.
 - If adding a new provider that uses an existing request style, add only a `ModelConfig`.
 - If adding a provider with different request behavior, create a new client class and register it in `build_client()`.
-- Preserve the Excel shape: model names as rows and task metric pairs as columns.
+- Preserve the `Summary` sheet shape: model names as rows and task metric pairs as columns.
+- Preserve the `Details` sheet purpose: each model/task/run should include the full answer text and output token count.
 - When architecture, run commands, environment variables, or project structure change, update both `README.md` and this `AGENTS.md`.
 
 ## Common Commands

@@ -24,9 +24,20 @@ from llm_response_time_evaluation.config import (
 
 
 @dataclass(frozen=True)
+class RunDetail:
+    run_number: int
+    response_time_seconds: float | None
+    output_tokens: int | None
+    tokens_per_second: float | None
+    answer: str
+    error: str | None = None
+
+
+@dataclass(frozen=True)
 class TaskAverage:
     response_time_seconds: float | None
     tokens_per_second: float | None
+    details: list[RunDetail]
     error: str | None = None
 
 
@@ -61,12 +72,14 @@ def _run_task_average(
     try:
         client = build_client(model_config)
     except Exception as exc:  # noqa: BLE001
-        return TaskAverage(None, None, str(exc))
+        return TaskAverage(None, None, [], str(exc))
 
     latencies: list[float] = []
     throughputs: list[float] = []
 
-    for _ in range(runs):
+    details: list[RunDetail] = []
+
+    for run_number in range(1, runs + 1):
         try:
             started_at = time.perf_counter()
             response = client.complete(task.prompt)
@@ -74,14 +87,35 @@ def _run_task_average(
             output_tokens = response.output_tokens or _estimate_tokens(response.text)
             token_per_second = output_tokens / latency if latency > 0 else 0
         except Exception as exc:  # noqa: BLE001
-            return TaskAverage(None, None, str(exc))
+            error = str(exc)
+            details.append(
+                RunDetail(
+                    run_number=run_number,
+                    response_time_seconds=None,
+                    output_tokens=None,
+                    tokens_per_second=None,
+                    answer="",
+                    error=error,
+                )
+            )
+            return TaskAverage(None, None, details, error)
 
         latencies.append(latency)
         throughputs.append(token_per_second)
+        details.append(
+            RunDetail(
+                run_number=run_number,
+                response_time_seconds=latency,
+                output_tokens=output_tokens,
+                tokens_per_second=token_per_second,
+                answer=response.text,
+            )
+        )
 
     return TaskAverage(
         response_time_seconds=statistics.fmean(latencies),
         tokens_per_second=statistics.fmean(throughputs),
+        details=details,
     )
 
 
@@ -136,7 +170,69 @@ def _write_excel(
             80,
         )
 
+    _write_details_sheet(workbook=workbook, results=results)
+
     workbook.save(output_path)
+
+
+def _write_details_sheet(
+    workbook: Workbook,
+    results: dict[str, dict[str, TaskAverage]],
+) -> None:
+    sheet = workbook.create_sheet("Details")
+    sheet.append(
+        [
+            "Model",
+            "Task",
+            "Run",
+            "Response time",
+            "Output tokens",
+            "Token/second",
+            "Answer",
+            "Error",
+        ]
+    )
+
+    for cell in sheet[1]:
+        cell.font = Font(bold=True)
+
+    for model_name, task_results in results.items():
+        for task in BENCHMARK_TASKS:
+            average = task_results[task.name]
+            if not average.details:
+                sheet.append(
+                    [model_name, task.name, "", "", "", "", "", average.error or ""]
+                )
+                continue
+
+            for detail in average.details:
+                sheet.append(
+                    [
+                        model_name,
+                        task.name,
+                        detail.run_number,
+                        _round_or_blank(detail.response_time_seconds),
+                        detail.output_tokens
+                        if detail.output_tokens is not None
+                        else "",
+                        _round_or_blank(detail.tokens_per_second),
+                        detail.answer,
+                        detail.error or "",
+                    ]
+                )
+
+    column_widths = {
+        "A": 36,
+        "B": 12,
+        "C": 8,
+        "D": 16,
+        "E": 16,
+        "F": 16,
+        "G": 80,
+        "H": 80,
+    }
+    for column_letter, width in column_widths.items():
+        sheet.column_dimensions[column_letter].width = width
 
 
 def _round_or_blank(value: float | None) -> float | str:

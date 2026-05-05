@@ -32,8 +32,12 @@ RUNS_PER_MODEL = 1
 # BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here")
 # BenchmarkTask(name="2k", prompt="paste roughly 2k tokens here")
 BENCHMARK_TASKS = [
+    # BenchmarkTask(
+    #     name="0.01k",
+    #     prompt="what model are you?",
+    # ),
     BenchmarkTask(
-        name="0.01k",
+        name="2576 words input",
         prompt="what model are you?",
     ),
 ]
@@ -56,6 +60,14 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
     ModelConfig(
+        display_name="Azure AI Foundry GPT-5.4 Mini (westus3 Global Stadard Priority)",
+        provider="azure_foundry_openai",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
+        api_key_env="AZURE_FOUNDRY_API_KEY",
+        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_5_1_mini_priority",
+        api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
+    ),
+    ModelConfig(
         display_name="Azure AI Foundry DeepSeek-V4-Flash (westus3 Global Stadard)",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT",
@@ -64,18 +76,18 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION",
     ),
     ModelConfig(
-        display_name="Alibaba Cloud DeepSeek-V4-Flash (Germany)",
-        provider="openai_compatible",
-        endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
-        api_key_env="ALIBABA_CLOUD_API_KEY",
-        model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
-    ),
-    ModelConfig(
         display_name="Azure AI Korera Central Foundry DeepSeek-V4-Flash (koreacentral Global Stadard)",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
         api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
         model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL_KOREA_CENTRAL",
         api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
+    ),
+    ModelConfig(
+        display_name="Alibaba Cloud DeepSeek-V4-Flash (Germany)",
+        provider="openai_compatible",
+        endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
+        api_key_env="ALIBABA_CLOUD_API_KEY",
+        model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
     ),
 ]
