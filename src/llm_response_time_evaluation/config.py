@@ -88,14 +88,14 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
     ),
     ModelConfig(
-        display_name="DeepSeek-V4-Flash - Alibaba Cloud DeepSeek-V4-Flash - Germany",
+        display_name="DeepSeek-V4-Flash - Alibaba Cloud - Germany",
         provider="openai_compatible",
         endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
         api_key_env="ALIBABA_CLOUD_API_KEY",
         model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
     ),
     ModelConfig(
-        display_name="DeepSeek-V4-Flash - Aliyun DeepSeek-V4-Flash - China",
+        display_name="DeepSeek-V4-Flash - Aliyun - China",
         provider="openai_compatible",
         endpoint_env="ALIYUN_COMPATIBLE_BASE_URL",
         api_key_env="ALIYUN_API_KEY",
