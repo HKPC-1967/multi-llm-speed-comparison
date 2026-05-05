@@ -1,6 +1,6 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLM models across providers. 
+`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLMs across providers. 
 ![summary.png](readme/images/summary.png)
 ![detail.png](readme/images/detail.png)
 ![tasks.png](readme/images/tasks.png)  
@@ -15,7 +15,7 @@ uv sync
 2. Copy the `.env.copy` file to `.env`. :  
 Then edit `.env`  with your real endpoint, API version, key, and model name.
 3. How to add a new Model:  
-
+Add a new `ModelConfig` to the `MODEL_CONFIGS`.
 ![add_new_model.png](readme/images/add_new_model.png)  
 
 ## 2. Run
