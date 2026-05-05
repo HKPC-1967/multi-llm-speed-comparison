@@ -1,6 +1,7 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
+`multi-llm-speed-comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. 
+![summary.png](readme/images/summary.png)
 
 ## Supported Models
 
@@ -15,23 +16,19 @@ The initial configuration includes:
 
 Install dependencies with `uv`:
 
-```powershell
+```shell
 uv sync
 ```
 
 Create your local environment file:
 
-```powershell
-Copy-Item .env.copy .env
-```
-
-Then edit `.env` and replace every placeholder value with your real endpoint, key, API version, deployment name, or model name.
+Copy the `.env.copy` file to `.env`. Then edit `.env` and replace every placeholder value with your real endpoint, key, API version, deployment name, or model name.
 
 ## Run
 
 Run the benchmark and write an Excel file under `outputs/`:
 
-```powershell
+```shell
 uv run multi-llm-speed-comparison
 ```
 
@@ -62,9 +59,8 @@ Example task addition:
 
 ```python
 BENCHMARK_TASKS = [
-    BenchmarkTask(name="0.01k", prompt="0123456789"),
-    BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here"),
-    BenchmarkTask(name="2k", prompt="paste roughly 2k tokens here"),
+    BenchmarkTask(name="1k input", prompt="paste roughly 1k tokens here"),
+    BenchmarkTask(name="5k input", prompt="paste roughly 5k tokens here"),
 ]
 ```
 

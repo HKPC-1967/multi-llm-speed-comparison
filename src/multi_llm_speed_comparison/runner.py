@@ -63,7 +63,7 @@ def run_benchmark(output_path: Path) -> Path:
 
 def default_output_path() -> Path:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    return Path("outputs") / f"llm_benchmark_{timestamp}.xlsx"
+    return Path("outputs") / f"llm_evaluation_{timestamp}.xlsx"
 
 
 def _run_task_average(
@@ -142,7 +142,7 @@ def _write_excel(
     sheet = workbook.active
     sheet.title = "Summary"
 
-    header = ["Model"]
+    header = ["Model - Provider"]
     for task in BENCHMARK_TASKS:
         header.extend(
             [
