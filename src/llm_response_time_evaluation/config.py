@@ -34,7 +34,7 @@ RUNS_PER_MODEL = 1
 BENCHMARK_TASKS = [
     BenchmarkTask(
         name="0.01k",
-        prompt="0123456789",
+        prompt="what model are you?",
     ),
 ]
 
@@ -69,5 +69,13 @@ MODEL_CONFIGS = [
         endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
         api_key_env="ALIBABA_CLOUD_API_KEY",
         model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
+    ),
+    ModelConfig(
+        display_name="Azure AI Korera Central Foundry DeepSeek-V4-Flash (koreacentral Global Stadard)",
+        provider="azure_foundry",
+        endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
+        api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
+        model_env="AZURE_FOUNDRY_DEEPSEEK_V4_FLASH_MODEL_KOREA_CENTRAL",
+        api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
     ),
 ]
