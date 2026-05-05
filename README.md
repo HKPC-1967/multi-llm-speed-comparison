@@ -1,6 +1,6 @@
-# LLM Response Time Evaluation
+# multi_llm_speed_comparison
 
-This Python project benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
+`multi_llm_speed_comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
 
 ## Supported Models
 
@@ -34,6 +34,8 @@ Run the benchmark and write an Excel file under `outputs/`:
 ```powershell
 uv run llm-response-time-evaluation
 ```
+
+The repository name is `multi_llm_speed_comparison`; the current CLI command remains `llm-response-time-evaluation`.
 
 Use a custom Excel output path:
 
