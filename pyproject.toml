@@ -1,0 +1,27 @@
+[project]
+name = "llm-response-time-evaluation"
+version = "0.1.0"
+description = "Benchmark LLM response latency and output token throughput across providers."
+readme = "README.md"
+authors = [
+    { name = "nick", email = "17940498+codeHui@users.noreply.github.com" }
+]
+requires-python = "==3.12.*"
+dependencies = [
+    "openpyxl==3.1.5",
+    "python-dotenv==1.0.1",
+    "requests==2.32.3",
+    "tiktoken==0.7.0",
+]
+
+[project.scripts]
+llm-response-time-evaluation = "llm_response_time_evaluation.cli:main"
+
+[build-system]
+requires = ["uv_build==0.9.16"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff==0.6.9",
+]

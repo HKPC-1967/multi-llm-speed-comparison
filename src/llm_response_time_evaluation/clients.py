@@ -1,0 +1,161 @@
+"""Provider clients for benchmark requests."""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass
+from typing import Any, Protocol
+from urllib.parse import urlencode
+
+import requests
+
+from llm_response_time_evaluation.config import ModelConfig
+
+
+DEFAULT_TIMEOUT_SECONDS = 120
+
+
+@dataclass(frozen=True)
+class ModelResponse:
+    text: str
+    output_tokens: int | None
+
+
+class ModelClient(Protocol):
+    def complete(self, prompt: str) -> ModelResponse:
+        """Send a prompt and return the response text plus token usage."""
+
+
+def build_client(config: ModelConfig) -> ModelClient:
+    if config.provider == "azure_openai":
+        return AzureOpenAIClient(config)
+    if config.provider == "azure_foundry":
+        return AzureFoundryClient(config)
+    if config.provider == "openai_compatible":
+        return OpenAICompatibleClient(config)
+
+    msg = f"Unsupported provider '{config.provider}' for {config.display_name}."
+    raise ValueError(msg)
+
+
+class BaseRequestsClient:
+    def __init__(self, config: ModelConfig) -> None:
+        self.config = config
+        self.endpoint = _env(config.endpoint_env).rstrip("/")
+        self.api_key = _env(config.api_key_env)
+        self.model = _env(config.model_env)
+        self.api_version = (
+            _env(config.api_version_env) if config.api_version_env else None
+        )
+
+    def _post(
+        self, url: str, headers: dict[str, str], payload: dict[str, Any]
+    ) -> ModelResponse:
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            timeout=DEFAULT_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+        data = response.json()
+        return ModelResponse(
+            text=_extract_text(data),
+            output_tokens=_extract_output_tokens(data),
+        )
+
+
+class AzureOpenAIClient(BaseRequestsClient):
+    """Azure OpenAI chat completions endpoint using a deployment name."""
+
+    def complete(self, prompt: str) -> ModelResponse:
+        query = urlencode({"api-version": self.api_version})
+        url = (
+            f"{self.endpoint}/openai/deployments/{self.model}/chat/completions?{query}"
+        )
+        return self._post(
+            url=url,
+            headers={"api-key": self.api_key, "Content-Type": "application/json"},
+            payload=_chat_payload(prompt),
+        )
+
+
+class AzureFoundryClient(BaseRequestsClient):
+    """Azure AI Foundry model inference chat completions endpoint."""
+
+    def complete(self, prompt: str) -> ModelResponse:
+        query = urlencode({"api-version": self.api_version}) if self.api_version else ""
+        suffix = f"?{query}" if query else ""
+        url = f"{self.endpoint}/chat/completions{suffix}"
+        payload = _chat_payload(prompt)
+        payload["model"] = self.model
+        return self._post(
+            url=url,
+            headers={"api-key": self.api_key, "Content-Type": "application/json"},
+            payload=payload,
+        )
+
+
+class OpenAICompatibleClient(BaseRequestsClient):
+    """OpenAI-compatible chat completions client, used by Alibaba Cloud DashScope."""
+
+    def complete(self, prompt: str) -> ModelResponse:
+        payload = _chat_payload(prompt)
+        payload["model"] = self.model
+        return self._post(
+            url=f"{self.endpoint}/chat/completions",
+            headers={
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            },
+            payload=payload,
+        )
+
+
+def _chat_payload(prompt: str) -> dict[str, Any]:
+    return {
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        "temperature": 0,
+    }
+
+
+def _env(name: str | None) -> str:
+    if not name:
+        msg = "Internal error: env var name is missing."
+        raise ValueError(msg)
+    value = os.getenv(name)
+    if not value:
+        msg = f"Missing required environment variable: {name}"
+        raise RuntimeError(msg)
+    return value
+
+
+def _extract_text(data: dict[str, Any]) -> str:
+    choices = data.get("choices") or []
+    if not choices:
+        return ""
+
+    first_choice = choices[0]
+    message = first_choice.get("message") or {}
+    content = message.get("content")
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        return "".join(
+            part.get("text", "") for part in content if isinstance(part, dict)
+        )
+    return str(content or "")
+
+
+def _extract_output_tokens(data: dict[str, Any]) -> int | None:
+    usage = data.get("usage") or {}
+    for key in ("completion_tokens", "output_tokens", "generated_tokens"):
+        value = usage.get(key)
+        if isinstance(value, int):
+            return value
+    return None
