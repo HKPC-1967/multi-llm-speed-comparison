@@ -1,6 +1,6 @@
-# multi_llm_speed_comparison
+# multi-llm-speed-comparison
 
-`multi_llm_speed_comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
+`multi-llm-speed-comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
 
 ## Supported Models
 
@@ -32,26 +32,24 @@ Then edit `.env` and replace every placeholder value with your real endpoint, ke
 Run the benchmark and write an Excel file under `outputs/`:
 
 ```powershell
-uv run llm-response-time-evaluation
+uv run multi-llm-speed-comparison
 ```
-
-The repository name is `multi_llm_speed_comparison`; the current CLI command remains `llm-response-time-evaluation`.
 
 Use a custom Excel output path:
 
 ```powershell
-uv run llm-response-time-evaluation --output outputs/my_result.xlsx
+uv run multi-llm-speed-comparison --output outputs/my_result.xlsx
 ```
 
 The module entry point also works:
 
 ```powershell
-uv run python -m llm_response_time_evaluation
+uv run python -m multi_llm_speed_comparison
 ```
 
 ## Configure Benchmark Inputs
 
-Edit `src/llm_response_time_evaluation/config.py`.
+Edit `src/multi_llm_speed_comparison/config.py`.
 
 The main values are near the top of the file:
 
@@ -91,7 +89,7 @@ The `Tasks` sheet records the configured benchmark task name, original prompt, a
 The provider design is split into configuration and request clients:
 
 - Add a model row in `MODEL_CONFIGS` when the new model uses an existing request style.
-- Add a new client class in `src/llm_response_time_evaluation/clients.py` when the platform has a different URL shape, authentication method, request body, or response body.
+- Add a new client class in `src/multi_llm_speed_comparison/clients.py` when the platform has a different URL shape, authentication method, request body, or response body.
 - Register the new provider string in `build_client()`.
 - Add matching placeholder variables to `.env.copy`.
 - Update this README and `AGENTS.md` whenever the architecture or startup steps change.

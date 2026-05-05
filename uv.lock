@@ -55,7 +55,7 @@ wheels = [
 ]
 
 [[package]]
-name = "llm-response-time-evaluation"
+name = "multi-llm-speed-comparison"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

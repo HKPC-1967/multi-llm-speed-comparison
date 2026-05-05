@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 
 import requests
 
-from llm_response_time_evaluation.config import TEMPERATURE, ModelConfig
+from multi_llm_speed_comparison.config import TEMPERATURE, ModelConfig
 
 
 DEFAULT_TIMEOUT_SECONDS = 120

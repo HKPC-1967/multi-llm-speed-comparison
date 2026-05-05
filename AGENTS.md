@@ -8,10 +8,10 @@ This project benchmarks LLM response latency and output token throughput across 
 
 ## Main Files
 
-- `src/llm_response_time_evaluation/config.py`: user-editable benchmark settings. Keep `RUNS_PER_MODEL`, `TEMPERATURE`, `BENCHMARK_TASKS`, and `MODEL_CONFIGS` easy to find near the top.
-- `src/llm_response_time_evaluation/clients.py`: provider-specific request code. Add a new client here if a platform needs a different URL, auth header, request body, or response parser.
-- `src/llm_response_time_evaluation/runner.py`: benchmark loop, averaging, token fallback estimation, and Excel export.
-- `src/llm_response_time_evaluation/cli.py`: command line entry point.
+- `src/multi_llm_speed_comparison/config.py`: user-editable benchmark settings. Keep `RUNS_PER_MODEL`, `TEMPERATURE`, `BENCHMARK_TASKS`, and `MODEL_CONFIGS` easy to find near the top.
+- `src/multi_llm_speed_comparison/clients.py`: provider-specific request code. Add a new client here if a platform needs a different URL, auth header, request body, or response parser.
+- `src/multi_llm_speed_comparison/runner.py`: benchmark loop, averaging, token fallback estimation, and Excel export.
+- `src/multi_llm_speed_comparison/cli.py`: command line entry point.
 - `.env.copy`: commit-safe environment template. Never put real secrets in this file.
 - `.env`: local secret file ignored by git.
 - `README.md`: user-facing setup, run, and extension instructions.
@@ -39,8 +39,8 @@ This project benchmarks LLM response latency and output token throughput across 
 
 ```powershell
 uv sync
-uv run llm-response-time-evaluation
-uv run llm-response-time-evaluation --output outputs/my_result.xlsx
+uv run multi-llm-speed-comparison
+uv run multi-llm-speed-comparison --output outputs/my_result.xlsx
 uv run ruff check .
 uv run python -m compileall src
 ```

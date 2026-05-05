@@ -13,8 +13,8 @@ from dotenv import load_dotenv
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-from llm_response_time_evaluation.clients import build_client
-from llm_response_time_evaluation.config import (
+from multi_llm_speed_comparison.clients import build_client
+from multi_llm_speed_comparison.config import (
     BENCHMARK_TASKS,
     MODEL_CONFIGS,
     RUNS_PER_MODEL,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from llm_response_time_evaluation.runner import default_output_path, run_benchmark
+from multi_llm_speed_comparison.runner import default_output_path, run_benchmark
 
 
 def main() -> None:
