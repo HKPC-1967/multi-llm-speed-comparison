@@ -24,6 +24,7 @@ class ModelConfig:
     model_env: str
     api_version_env: str | None = None
 
+
 # Add more tasks here, for example:
 # BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here")
 # BenchmarkTask(name="5k", prompt="paste roughly 5k tokens here")
@@ -77,7 +78,6 @@ RUNS_PER_MODEL = 1
 
 # Sampling temperature used for all model calls.
 TEMPERATURE = 0
-
 
 
 MODEL_CONFIGS = [

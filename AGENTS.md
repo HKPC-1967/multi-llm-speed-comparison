@@ -30,7 +30,7 @@ This project benchmarks LLM response latency and output token throughput across 
 - Keep all documentation, code comments, and user-facing strings in English.
 - If adding a new provider that uses an existing request style, add only a `ModelConfig`.
 - If adding a provider with different request behavior, create a new client class and register it in `build_client()`.
-- Preserve the `Summary` sheet shape: model names as rows and task metric groups as columns. Each task should include response time, output tokens, and token/second.
+- Preserve the `Summary` sheet shape: model names as rows and task metric groups as columns. Use a two-row header where each task name is a merged cell above response time, output tokens, and token/second.
 - Preserve the `Details` sheet purpose: each model/task/run should include the full answer text and output token count.
 - Preserve the `Tasks` sheet purpose: each benchmark task should include the configured name, prompt, and temperature.
 - When architecture, run commands, environment variables, or project structure change, update both `README.md` and this `AGENTS.md`.

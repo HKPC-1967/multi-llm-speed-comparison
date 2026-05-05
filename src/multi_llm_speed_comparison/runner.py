@@ -11,7 +11,7 @@ from pathlib import Path
 import tiktoken
 from dotenv import load_dotenv
 from openpyxl import Workbook
-from openpyxl.styles import Font
+from openpyxl.styles import Alignment, Font
 
 from multi_llm_speed_comparison.clients import build_client
 from multi_llm_speed_comparison.config import (
@@ -142,20 +142,7 @@ def _write_excel(
     sheet = workbook.active
     sheet.title = "Summary"
 
-    header = ["Model - Provider"]
-    for task in BENCHMARK_TASKS:
-        header.extend(
-            [
-                f"{task.name} - response time",
-                f"{task.name} - output tokens",
-                f"{task.name} - token/second",
-            ]
-        )
-    header.append("error")
-    sheet.append(header)
-
-    for cell in sheet[1]:
-        cell.font = Font(bold=True)
+    _write_summary_header(sheet)
 
     for model_name, task_results in results.items():
         row: list[object] = [model_name]
@@ -170,17 +157,54 @@ def _write_excel(
         row.append("; ".join(errors))
         sheet.append(row)
 
-    for column_cells in sheet.columns:
-        max_length = max(len(str(cell.value or "")) for cell in column_cells)
-        sheet.column_dimensions[column_cells[0].column_letter].width = min(
-            max(max_length + 2, 12),
-            80,
-        )
+    _set_summary_column_widths(sheet)
 
     _write_details_sheet(workbook=workbook, results=results)
     _write_tasks_sheet(workbook=workbook)
 
     workbook.save(output_path)
+
+
+def _write_summary_header(sheet) -> None:
+    sheet.cell(row=1, column=1, value="Model - Provider")
+    sheet.merge_cells(start_row=1, start_column=1, end_row=2, end_column=1)
+
+    column_index = 2
+    for task in BENCHMARK_TASKS:
+        sheet.cell(row=1, column=column_index, value=task.name)
+        sheet.merge_cells(
+            start_row=1,
+            start_column=column_index,
+            end_row=1,
+            end_column=column_index + 2,
+        )
+        sheet.cell(row=2, column=column_index, value="response time")
+        sheet.cell(row=2, column=column_index + 1, value="output tokens")
+        sheet.cell(row=2, column=column_index + 2, value="token/second")
+        column_index += 3
+
+    sheet.cell(row=1, column=column_index, value="error")
+    sheet.merge_cells(
+        start_row=1,
+        start_column=column_index,
+        end_row=2,
+        end_column=column_index,
+    )
+
+    for row in sheet.iter_rows(min_row=1, max_row=2):
+        for cell in row:
+            cell.font = Font(bold=True)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+
+def _set_summary_column_widths(sheet) -> None:
+    max_column = sheet.max_column
+    sheet.column_dimensions["A"].width = 42
+    for column_index in range(2, max_column):
+        column_letter = sheet.cell(row=2, column=column_index).column_letter
+        sheet.column_dimensions[column_letter].width = 16
+    error_column = sheet.cell(row=1, column=max_column).column_letter
+    sheet.column_dimensions[error_column].width = 60
 
 
 def _write_tasks_sheet(workbook: Workbook) -> None:

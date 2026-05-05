@@ -63,13 +63,13 @@ BENCHMARK_TASKS = [
 
 The Excel workbook has `Summary`, `Details`, and `Tasks` sheets.
 
-The `Summary` sheet has the model name in the first column. Each benchmark task adds three columns:
+The `Summary` sheet has the model name in the first column. Its header uses two rows: each task name is shown once in a merged cell, and the second header row shows three metric columns:
 
-- `<task name> - response time`
-- `<task name> - output tokens`
-- `<task name> - token/second`
+- `response time`
+- `output tokens`
+- `token/second`
 
-For example, tasks named `1k` and `2k` produce columns like `1k - response time`, `1k - output tokens`, `1k - token/second`, `2k - response time`, `2k - output tokens`, and `2k - token/second`.
+For example, tasks named `1k` and `2k` each appear once as merged top-level headers, with their metrics below.
 
 The `Details` sheet records each individual call with model name, task name, run number, response time, output token count, token/second, full answer text, and error message if the call failed.
 
