@@ -48,7 +48,7 @@ TEMPERATURE = 0
 
 MODEL_CONFIGS = [
     ModelConfig(
-        display_name="GPT-4.1 - Azure OpenAI - westus3 Global Stadard",
+        display_name="GPT-4.1 - Azure OpenAI - westus3 Global Standard",
         provider="azure_openai",
         endpoint_env="AZURE_OPENAI_ENDPOINT",
         api_key_env="AZURE_OPENAI_API_KEY",
@@ -56,7 +56,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_OPENAI_API_VERSION",
     ),
     ModelConfig(
-        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Stadard",
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard",
         provider="azure_foundry_openai",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
         api_key_env="AZURE_FOUNDRY_API_KEY",
@@ -64,7 +64,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
     ModelConfig(
-        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Stadard - Priority",
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Standard - Priority",
         provider="azure_foundry_openai",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
         api_key_env="AZURE_FOUNDRY_API_KEY",
@@ -72,7 +72,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
     ModelConfig(
-        display_name="DeepSeek-V4-Flash - Azure AI Foundry - westus3 Global Stadard",
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - westus3 Global Standard",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT",
         api_key_env="AZURE_FOUNDRY_API_KEY",
@@ -80,7 +80,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION",
     ),
     ModelConfig(
-        display_name="DeepSeek-V4-Flash - Azure AI Foundry - koreacentral Global Stadard",
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - koreacentral Global Standard",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
         api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
