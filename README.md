@@ -1,30 +1,24 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. 
+`multi-llm-speed-comparison` evaluates response speed for multiple LLM models across providers. 
 ![summary.png](readme/images/summary.png)
+![detail.png](readme/images/detail.png)
+![Tasks.png](readme/images/Tasks.png)  
+This Excel file is an output example: [llm_evaluation_output_example.xlsx](llm_evaluation_output_example.xlsx)
+## 1. Setup
 
-## Supported Models
-
-The initial configuration includes:
-
-- Azure OpenAI GPT-4.1
-- Azure AI Foundry GPT-5.4 Mini through the OpenAI Responses API
-- Azure AI Foundry DeepSeek-V4-Flash
-- Alibaba Cloud DeepSeek-V4-Flash through DashScope's OpenAI-compatible API
-
-## Setup
-
-Install dependencies with `uv`:
+1. Install dependencies with `uv`:
 
 ```shell
 uv sync
 ```
+2. Copy the `.env.copy` file to `.env`. :  
+Then edit `.env`  with your real endpoint, API version, key, and model name.
+3. How to add a new Model:  
 
-Create your local environment file:
+![add_new_model.png](readme/images/add_new_model.png)  
 
-Copy the `.env.copy` file to `.env`. Then edit `.env` and replace every placeholder value with your real endpoint, key, API version, deployment name, or model name.
-
-## Run
+## 2. Run
 
 Run the benchmark and write an Excel file under `outputs/`:
 
@@ -34,17 +28,18 @@ uv run multi-llm-speed-comparison
 
 Use a custom Excel output path:
 
-```powershell
+```shell
 uv run multi-llm-speed-comparison --output outputs/my_result.xlsx
 ```
 
 The module entry point also works:
 
-```powershell
+```shell
 uv run python -m multi_llm_speed_comparison
 ```
 
-## Configure Benchmark Inputs
+## 3. Customization Details
+### Configure Benchmark Inputs
 
 Edit `src/multi_llm_speed_comparison/config.py`.
 
@@ -64,7 +59,7 @@ BENCHMARK_TASKS = [
 ]
 ```
 
-## Output Format
+### Output Format
 
 The Excel workbook has `Summary`, `Details`, and `Tasks` sheets.
 
@@ -80,7 +75,7 @@ The `Details` sheet records each individual call with model name, task name, run
 
 The `Tasks` sheet records the configured benchmark task name, original prompt, and temperature.
 
-## Extending Providers
+### Extending Providers
 
 The provider design is split into configuration and request clients:
 
