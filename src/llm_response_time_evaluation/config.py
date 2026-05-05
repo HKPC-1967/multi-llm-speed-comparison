@@ -44,7 +44,7 @@ BENCHMARK_TASKS = [
 
 MODEL_CONFIGS = [
     ModelConfig(
-        display_name="Azure OpenAI GPT-4.1 (westus3 Global Stadard)",
+        display_name="GPT-4.1 - Azure OpenAI - westus3 Global Stadard",
         provider="azure_openai",
         endpoint_env="AZURE_OPENAI_ENDPOINT",
         api_key_env="AZURE_OPENAI_API_KEY",
@@ -52,23 +52,23 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_OPENAI_API_VERSION",
     ),
     ModelConfig(
-        display_name="Azure AI Foundry GPT-5.4 Mini (westus3 Global Stadard)",
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Stadard",
         provider="azure_foundry_openai",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
         api_key_env="AZURE_FOUNDRY_API_KEY",
-        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_5_1_mini",
+        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI",
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
     ModelConfig(
-        display_name="Azure AI Foundry GPT-5.4 Mini (westus3 Global Stadard Priority)",
+        display_name="GPT-5.4 Mini - Azure AI Foundry OpenAI - westus3 Global Stadard - Priority",
         provider="azure_foundry_openai",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_OPENAI",
         api_key_env="AZURE_FOUNDRY_API_KEY",
-        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_5_1_mini_priority",
+        model_env="AZURE_FOUNDRY_GPT54_MINI_MODEL_OPENAI_priority",
         api_version_env="AZURE_FOUNDRY_API_VERSION_OPENAI",
     ),
     ModelConfig(
-        display_name="Azure AI Foundry DeepSeek-V4-Flash (westus3 Global Stadard)",
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - westus3 Global Stadard",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT",
         api_key_env="AZURE_FOUNDRY_API_KEY",
@@ -76,7 +76,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION",
     ),
     ModelConfig(
-        display_name="Azure AI Korera Central Foundry DeepSeek-V4-Flash (koreacentral Global Stadard)",
+        display_name="DeepSeek-V4-Flash - Azure AI Foundry - koreacentral Global Stadard",
         provider="azure_foundry",
         endpoint_env="AZURE_FOUNDRY_ENDPOINT_KOREA_CENTRAL",
         api_key_env="AZURE_FOUNDRY_API_KEY_KOREA_CENTRAL",
@@ -84,7 +84,7 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
     ),
     ModelConfig(
-        display_name="Alibaba Cloud DeepSeek-V4-Flash (Germany)",
+        display_name="DeepSeek-V4-Flash - Alibaba Cloud DeepSeek-V4-Flash (Germany)",
         provider="openai_compatible",
         endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
         api_key_env="ALIBABA_CLOUD_API_KEY",

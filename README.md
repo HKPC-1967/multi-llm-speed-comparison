@@ -1,6 +1,6 @@
 # LLM Response Time Evaluation
 
-This Python project benchmarks response time and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes two columns: response time and token/second.
+This Python project benchmarks response time, output tokens, and output token throughput for multiple LLM models across providers. It writes an Excel file where each row is a model and each task contributes three columns: response time, output tokens, and token/second.
 
 ## Supported Models
 
@@ -71,12 +71,13 @@ BENCHMARK_TASKS = [
 
 The Excel workbook has a `Summary` sheet and a `Details` sheet.
 
-The `Summary` sheet has the model name in the first column. Each benchmark task adds two columns:
+The `Summary` sheet has the model name in the first column. Each benchmark task adds three columns:
 
-- `<task name>-response time`
-- `<task name>-token/second`
+- `<task name> - response time`
+- `<task name> - output tokens`
+- `<task name> - token/second`
 
-For example, tasks named `1k` and `2k` produce columns like `1k-response time`, `1k-token/second`, `2k-response time`, and `2k-token/second`.
+For example, tasks named `1k` and `2k` produce columns like `1k - response time`, `1k - output tokens`, `1k - token/second`, `2k - response time`, `2k - output tokens`, and `2k - token/second`.
 
 The `Details` sheet records each individual call with model name, task name, run number, response time, output token count, token/second, full answer text, and error message if the call failed.
 

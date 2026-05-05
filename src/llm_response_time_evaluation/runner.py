@@ -36,6 +36,7 @@ class RunDetail:
 @dataclass(frozen=True)
 class TaskAverage:
     response_time_seconds: float | None
+    output_tokens: float | None
     tokens_per_second: float | None
     details: list[RunDetail]
     error: str | None = None
@@ -72,9 +73,10 @@ def _run_task_average(
     try:
         client = build_client(model_config)
     except Exception as exc:  # noqa: BLE001
-        return TaskAverage(None, None, [], str(exc))
+        return TaskAverage(None, None, None, [], str(exc))
 
     latencies: list[float] = []
+    output_token_counts: list[int] = []
     throughputs: list[float] = []
 
     details: list[RunDetail] = []
@@ -98,9 +100,10 @@ def _run_task_average(
                     error=error,
                 )
             )
-            return TaskAverage(None, None, details, error)
+            return TaskAverage(None, None, None, details, error)
 
         latencies.append(latency)
+        output_token_counts.append(output_tokens)
         throughputs.append(token_per_second)
         details.append(
             RunDetail(
@@ -114,6 +117,7 @@ def _run_task_average(
 
     return TaskAverage(
         response_time_seconds=statistics.fmean(latencies),
+        output_tokens=statistics.fmean(output_token_counts),
         tokens_per_second=statistics.fmean(throughputs),
         details=details,
     )
@@ -141,8 +145,9 @@ def _write_excel(
     for task in BENCHMARK_TASKS:
         header.extend(
             [
-                f"{task.name}-response time",
-                f"{task.name}-token/second",
+                f"{task.name} - response time",
+                f"{task.name} - output tokens",
+                f"{task.name} - token/second",
             ]
         )
     header.append("error")
@@ -157,6 +162,7 @@ def _write_excel(
         for task in BENCHMARK_TASKS:
             average = task_results[task.name]
             row.append(_round_or_blank(average.response_time_seconds))
+            row.append(_round_or_blank(average.output_tokens))
             row.append(_round_or_blank(average.tokens_per_second))
             if average.error:
                 errors.append(f"{task.name}: {average.error}")
