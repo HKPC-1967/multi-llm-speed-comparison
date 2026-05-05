@@ -18,6 +18,7 @@ from llm_response_time_evaluation.config import (
     BENCHMARK_TASKS,
     MODEL_CONFIGS,
     RUNS_PER_MODEL,
+    TEMPERATURE,
     BenchmarkTask,
     ModelConfig,
 )
@@ -177,8 +178,24 @@ def _write_excel(
         )
 
     _write_details_sheet(workbook=workbook, results=results)
+    _write_tasks_sheet(workbook=workbook)
 
     workbook.save(output_path)
+
+
+def _write_tasks_sheet(workbook: Workbook) -> None:
+    sheet = workbook.create_sheet("Tasks")
+    sheet.append(["Name", "Prompt", "Temperature"])
+
+    for cell in sheet[1]:
+        cell.font = Font(bold=True)
+
+    for task in BENCHMARK_TASKS:
+        sheet.append([task.name, task.prompt, TEMPERATURE])
+
+    sheet.column_dimensions["A"].width = 24
+    sheet.column_dimensions["B"].width = 100
+    sheet.column_dimensions["C"].width = 16
 
 
 def _write_details_sheet(

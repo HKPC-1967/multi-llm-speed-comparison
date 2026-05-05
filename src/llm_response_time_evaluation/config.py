@@ -24,10 +24,6 @@ class ModelConfig:
     model_env: str
     api_version_env: str | None = None
 
-
-# Number of calls per model/task pair. The final Excel value is the average.
-RUNS_PER_MODEL = 1
-
 # Add more tasks here, for example:
 # BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here")
 # BenchmarkTask(name="2k", prompt="paste roughly 2k tokens here")
@@ -41,6 +37,14 @@ BENCHMARK_TASKS = [
         prompt="what model are you?",
     ),
 ]
+
+# Number of calls per model/task pair. The final Excel value is the average.
+RUNS_PER_MODEL = 1
+
+# Sampling temperature used for all model calls.
+TEMPERATURE = 0
+
+
 
 MODEL_CONFIGS = [
     ModelConfig(
@@ -84,10 +88,17 @@ MODEL_CONFIGS = [
         api_version_env="AZURE_FOUNDRY_API_VERSION_KOREA_CENTRAL",
     ),
     ModelConfig(
-        display_name="DeepSeek-V4-Flash - Alibaba Cloud DeepSeek-V4-Flash (Germany)",
+        display_name="DeepSeek-V4-Flash - Alibaba Cloud DeepSeek-V4-Flash - Germany",
         provider="openai_compatible",
         endpoint_env="ALIBABA_CLOUD_COMPATIBLE_BASE_URL",
         api_key_env="ALIBABA_CLOUD_API_KEY",
         model_env="ALIBABA_DEEPSEEK_V4_FLASH_MODEL",
+    ),
+    ModelConfig(
+        display_name="DeepSeek-V4-Flash - Aliyun DeepSeek-V4-Flash - China",
+        provider="openai_compatible",
+        endpoint_env="ALIYUN_COMPATIBLE_BASE_URL",
+        api_key_env="ALIYUN_API_KEY",
+        model_env="ALIYUN_DEEPSEEK_V4_FLASH_MODEL",
     ),
 ]

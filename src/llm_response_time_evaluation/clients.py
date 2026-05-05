@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 
 import requests
 
-from llm_response_time_evaluation.config import ModelConfig
+from llm_response_time_evaluation.config import TEMPERATURE, ModelConfig
 
 
 DEFAULT_TIMEOUT_SECONDS = 120
@@ -78,7 +78,7 @@ class AzureOpenAIClient(BaseRequestsClient):
         return self._post(
             url=url,
             headers={"api-key": self.api_key, "Content-Type": "application/json"},
-            payload=_chat_payload(prompt),
+            payload=_chat_payload(prompt, temperature=TEMPERATURE),
         )
 
 
@@ -89,7 +89,7 @@ class AzureFoundryClient(BaseRequestsClient):
         query = urlencode({"api-version": self.api_version}) if self.api_version else ""
         suffix = f"?{query}" if query else ""
         url = f"{self.endpoint}/chat/completions{suffix}"
-        payload = _chat_payload(prompt)
+        payload = _chat_payload(prompt, temperature=TEMPERATURE)
         payload["model"] = self.model
         return self._post(
             url=url,
@@ -107,7 +107,11 @@ class AzureFoundryOpenAIClient(BaseRequestsClient):
         return self._post(
             url=url,
             headers={"api-key": self.api_key, "Content-Type": "application/json"},
-            payload=_responses_payload(model=self.model, prompt=prompt),
+            payload=_responses_payload(
+                model=self.model,
+                prompt=prompt,
+                temperature=TEMPERATURE,
+            ),
         )
 
 
@@ -115,7 +119,7 @@ class OpenAICompatibleClient(BaseRequestsClient):
     """OpenAI-compatible chat completions client, used by Alibaba Cloud DashScope."""
 
     def complete(self, prompt: str) -> ModelResponse:
-        payload = _chat_payload(prompt)
+        payload = _chat_payload(prompt, temperature=TEMPERATURE)
         payload["model"] = self.model
         return self._post(
             url=f"{self.endpoint}/chat/completions",
@@ -127,7 +131,7 @@ class OpenAICompatibleClient(BaseRequestsClient):
         )
 
 
-def _chat_payload(prompt: str) -> dict[str, Any]:
+def _chat_payload(prompt: str, temperature: float) -> dict[str, Any]:
     return {
         "messages": [
             {
@@ -135,15 +139,15 @@ def _chat_payload(prompt: str) -> dict[str, Any]:
                 "content": prompt,
             }
         ],
-        "temperature": 0,
+        "temperature": temperature,
     }
 
 
-def _responses_payload(model: str, prompt: str) -> dict[str, Any]:
+def _responses_payload(model: str, prompt: str, temperature: float) -> dict[str, Any]:
     return {
         "model": model,
         "input": prompt,
-        "temperature": 0,
+        "temperature": temperature,
     }
 
 

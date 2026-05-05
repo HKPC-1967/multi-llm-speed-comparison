@@ -54,6 +54,7 @@ Edit `src/llm_response_time_evaluation/config.py`.
 The main values are near the top of the file:
 
 - `RUNS_PER_MODEL`: how many calls to make for each model/task pair before averaging.
+- `TEMPERATURE`: sampling temperature used for all model calls. The default is `0`.
 - `BENCHMARK_TASKS`: named prompt tasks, such as `0.01k`, `1k`, or `2k`.
 - `MODEL_CONFIGS`: the models to benchmark and the environment variables they use.
 
@@ -69,7 +70,7 @@ BENCHMARK_TASKS = [
 
 ## Output Format
 
-The Excel workbook has a `Summary` sheet and a `Details` sheet.
+The Excel workbook has `Summary`, `Details`, and `Tasks` sheets.
 
 The `Summary` sheet has the model name in the first column. Each benchmark task adds three columns:
 
@@ -80,6 +81,8 @@ The `Summary` sheet has the model name in the first column. Each benchmark task 
 For example, tasks named `1k` and `2k` produce columns like `1k - response time`, `1k - output tokens`, `1k - token/second`, `2k - response time`, `2k - output tokens`, and `2k - token/second`.
 
 The `Details` sheet records each individual call with model name, task name, run number, response time, output token count, token/second, full answer text, and error message if the call failed.
+
+The `Tasks` sheet records the configured benchmark task name, original prompt, and temperature.
 
 ## Extending Providers
 

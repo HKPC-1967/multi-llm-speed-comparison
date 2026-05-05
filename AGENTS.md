@@ -4,11 +4,11 @@ Use this guide to understand and modify the project safely.
 
 ## Project Purpose
 
-This project benchmarks LLM response latency and output token throughput across several cloud providers. It exports one Excel workbook with a summary sheet and a per-call details sheet.
+This project benchmarks LLM response latency and output token throughput across several cloud providers. It exports one Excel workbook with summary, per-call details, and task configuration sheets.
 
 ## Main Files
 
-- `src/llm_response_time_evaluation/config.py`: user-editable benchmark settings. Keep `RUNS_PER_MODEL`, `BENCHMARK_TASKS`, and `MODEL_CONFIGS` easy to find near the top.
+- `src/llm_response_time_evaluation/config.py`: user-editable benchmark settings. Keep `RUNS_PER_MODEL`, `TEMPERATURE`, `BENCHMARK_TASKS`, and `MODEL_CONFIGS` easy to find near the top.
 - `src/llm_response_time_evaluation/clients.py`: provider-specific request code. Add a new client here if a platform needs a different URL, auth header, request body, or response parser.
 - `src/llm_response_time_evaluation/runner.py`: benchmark loop, averaging, token fallback estimation, and Excel export.
 - `src/llm_response_time_evaluation/cli.py`: command line entry point.
@@ -32,6 +32,7 @@ This project benchmarks LLM response latency and output token throughput across 
 - If adding a provider with different request behavior, create a new client class and register it in `build_client()`.
 - Preserve the `Summary` sheet shape: model names as rows and task metric groups as columns. Each task should include response time, output tokens, and token/second.
 - Preserve the `Details` sheet purpose: each model/task/run should include the full answer text and output token count.
+- Preserve the `Tasks` sheet purpose: each benchmark task should include the configured name, prompt, and temperature.
 - When architecture, run commands, environment variables, or project structure change, update both `README.md` and this `AGENTS.md`.
 
 ## Common Commands
