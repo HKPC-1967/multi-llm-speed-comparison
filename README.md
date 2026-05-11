@@ -61,16 +61,15 @@ BENCHMARK_TASKS = [
 ]
 ```
 
-### Extending Providers
+### Extend Providers
 
-The provider design is split into configuration and request clients:
+Provider support is modular: you define new models in the configuration (endpoint URL, API key, and model name), while all provider-specific API logic is implemented in separate client classes(e.g. OpenAI-compatible API).  
+This separation makes it easy to add or extend providers without changing the benchmark runner or Excel export logic.
 
-- Add a model row in `MODEL_CONFIGS` when the new model uses an existing request style.
-- Add a new client class in `src/multi_llm_speed_comparison/clients.py` when the platform has a different URL shape, authentication method, request body, or response body.
+- Add a `ModelConfig` to `MODEL_CONFIGS` when the new model uses an existing provider request style.
+- Add a new client class in `src/multi_llm_speed_comparison/clients.py` when the provider platform has a different URL shape, authentication method, request body, or response body.
 - Register the new provider string in `build_client()`.
 - Add matching placeholder variables to `.env.copy`.
-
-This keeps provider-specific request code isolated while the benchmark runner and Excel writer stay unchanged.
 
 Current provider strings:
 
