@@ -87,7 +87,11 @@ def _run_task_average(
             started_at = time.perf_counter()
             response = client.complete(task.prompt)
             latency = time.perf_counter() - started_at
-            output_tokens = response.output_tokens or _estimate_tokens(response.text)
+            if response.output_tokens is not None:
+                output_tokens = response.output_tokens
+            else:
+                output_tokens = _estimate_tokens(response.text)
+                print(f"{model_config.display_name} used #sym:_estimate_tokens")
             token_per_second = output_tokens / latency if latency > 0 else 0
         except Exception as exc:  # noqa: BLE001
             error = str(exc)

@@ -1,6 +1,6 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLMs.   
+`multi-llm-speed-comparison` is a tool for evaluating the response speed of multiple LLMs.  
 You can use it for multiple purposes, for example, to evaluate the LLM response time of the same model across different providers, or the LLM result of the same question across different LLMs.  
 This Excel file is an output example: [llm_evaluation_output_example.xlsx](llm_evaluation_output_example.xlsx)
 ![summary.png](readme/images/summary.png)
