@@ -25,9 +25,7 @@ class ModelConfig:
     api_version_env: str | None = None
 
 
-# Add more tasks here, for example:
-# BenchmarkTask(name="1k", prompt="paste roughly 1k tokens here")
-# BenchmarkTask(name="5k", prompt="paste roughly 5k tokens here")
+# Add more tasks here
 BENCHMARK_TASKS = [
     BenchmarkTask(
         name="Summarize 1.7K words to 200 words",
