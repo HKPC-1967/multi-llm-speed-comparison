@@ -41,7 +41,7 @@ uv run python -m multi_llm_speed_comparison
 ```
 
 ## 3. Customization Details
-### Configure Benchmark Inputs
+### Configure Benchmark Parameters
 
 Edit [src/multi_llm_speed_comparison/config.py](src/multi_llm_speed_comparison/config.py).
 
@@ -56,8 +56,8 @@ Example task addition:
 
 ```python
 BENCHMARK_TASKS = [
-    BenchmarkTask(name="10k input", prompt="paste roughly 10k tokens here"),
-    BenchmarkTask(name="50k input", prompt="paste roughly 50k tokens here"),
+    BenchmarkTask(name="Summarize 5k words to 200 words", prompt="Please read the provided article. Your task is to summarize it into exactly 200 words: paste your 5k-word article here"),
+    BenchmarkTask(name="50k words", prompt="paste your 50k-word question here"),
 ]
 ```
 
