@@ -16,8 +16,8 @@ uv sync
 ```
 2. Copy the `.env.copy` file to `.env`. :  
 Then, update the file with your actual endpoint URL, API key, and model name.
-3. How to add a new Model:  
-Add a new `ModelConfig` to the `MODEL_CONFIGS`. Below is an example of adding a model with an OpenAI-compatible API.
+3. Add a new LLM:  
+Add a new `ModelConfig` to the `MODEL_CONFIGS`. Below is an example of adding a LLM with an OpenAI-compatible API.
 ![add_new_model.png](readme/images/add_new_model.png)  
 
 ## 2. Run
