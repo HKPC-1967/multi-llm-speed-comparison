@@ -1,6 +1,6 @@
 # multi-llm-speed-comparison
 
-`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLMs across providers. 
+`multi-llm-speed-comparison` is a tool to evaluate response speed for multiple LLMs. You can use it for multiple purposes, for example, to evaluate the LLM response time of the same model across different providers, or the LLM result of the same question across different LLMs.
 ![summary.png](readme/images/summary.png)
 ![detail.png](readme/images/detail.png)
 ![tasks.png](readme/images/tasks.png)  
@@ -13,9 +13,9 @@ This Excel file is an output example: [llm_evaluation_output_example.xlsx](llm_e
 uv sync
 ```
 2. Copy the `.env.copy` file to `.env`. :  
-Then edit `.env`  with your real endpoint, API version, key, and model name.
+Then, update the file with your actual endpoint URL, API key, and model name.
 3. How to add a new Model:  
-Add a new `ModelConfig` to the `MODEL_CONFIGS`.
+Add a new `ModelConfig` to the `MODEL_CONFIGS`. Below is an example of adding a model with an OpenAI-compatible API.
 ![add_new_model.png](readme/images/add_new_model.png)  
 
 ## 2. Run
@@ -54,8 +54,8 @@ Example task addition:
 
 ```python
 BENCHMARK_TASKS = [
-    BenchmarkTask(name="1k input", prompt="paste roughly 1k tokens here"),
-    BenchmarkTask(name="5k input", prompt="paste roughly 5k tokens here"),
+    BenchmarkTask(name="10k input", prompt="paste roughly 10k tokens here"),
+    BenchmarkTask(name="50k input", prompt="paste roughly 50k tokens here"),
 ]
 ```
 
@@ -74,5 +74,5 @@ Current provider strings:
 
 - `azure_openai`: Azure OpenAI chat completions deployment URL.
 - `azure_foundry`: Azure AI Foundry chat completions URL.
-- `azure_foundry_openai`: Azure AI Foundry OpenAI Responses API URL, currently used by GPT-5.4 Mini.
-- `openai_compatible`: OpenAI-compatible chat completions URL, currently used by Alibaba Cloud DashScope.
+- `azure_foundry_openai`: Azure AI Foundry OpenAI Responses API URL.
+- `openai_compatible`: OpenAI-compatible chat completions URL.
