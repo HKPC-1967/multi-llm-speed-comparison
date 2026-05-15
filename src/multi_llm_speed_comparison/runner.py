@@ -93,7 +93,7 @@ def _run_task_average(
                 output_tokens_real = response.output_tokens
                 output_tokens_estimate = _estimate_tokens(response.text)
                 output_tokens = output_tokens_real
-                print(f"output_tokens_real: {output_tokens_real}, output_tokens_estimate: {output_tokens_estimate}, model: {model_config.display_name}")   
+                # print(f"output_tokens_real: {output_tokens_real}, output_tokens_estimate: {output_tokens_estimate}, model: {model_config.display_name}")   
             else:
                 output_tokens = _estimate_tokens(response.text)
                 print(f"output_tokens_real: None, output_tokens_estimate: {output_tokens}, model: {model_config.display_name}")
