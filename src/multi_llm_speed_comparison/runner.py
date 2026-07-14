@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import statistics
 import time
 from dataclasses import dataclass
@@ -29,6 +30,7 @@ class RunDetail:
     run_number: int
     response_time_seconds: float | None
     output_tokens: int | None
+    output_words: int | None
     tokens_per_second: float | None
     answer: str
     error: str | None = None
@@ -90,10 +92,7 @@ def _run_task_average(
             
             # Some providers don't return output tokens, so we need to estimate them
             if response.output_tokens is not None:
-                output_tokens_real = response.output_tokens
-                output_tokens_estimate = _estimate_tokens(response.text)
-                output_tokens = output_tokens_real
-                # print(f"output_tokens_real: {output_tokens_real}, output_tokens_estimate: {output_tokens_estimate}, model: {model_config.display_name}")   
+                output_tokens = response.output_tokens
             else:
                 output_tokens = _estimate_tokens(response.text)
                 print(f"output_tokens_real: None, output_tokens_estimate: {output_tokens}, model: {model_config.display_name}")
@@ -105,6 +104,7 @@ def _run_task_average(
                     run_number=run_number,
                     response_time_seconds=None,
                     output_tokens=None,
+                    output_words=None,
                     tokens_per_second=None,
                     answer="",
                     error=error,
@@ -120,6 +120,7 @@ def _run_task_average(
                 run_number=run_number,
                 response_time_seconds=latency,
                 output_tokens=output_tokens,
+                output_words=_count_output_words(response.text),
                 tokens_per_second=token_per_second,
                 answer=response.text,
             )
@@ -131,6 +132,14 @@ def _run_task_average(
         tokens_per_second=statistics.fmean(throughputs),
         details=details,
     )
+
+
+def _count_output_words(text: str) -> int:
+    if not text:
+        return 0
+    chinese_characters = re.findall(r"[\u4e00-\u9fff]", text)
+    english_words = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)
+    return len(chinese_characters) + len(english_words)
 
 
 def _estimate_tokens(text: str) -> int:
@@ -244,6 +253,7 @@ def _write_details_sheet(
             "Response time",
             "Output tokens",
             "Token/second",
+            "Output words",
             "Answer",
             "Error",
         ]
@@ -257,7 +267,17 @@ def _write_details_sheet(
             average = task_results[task.name]
             if not average.details:
                 sheet.append(
-                    [model_name, task.name, "", "", "", "", "", average.error or ""]
+                    [
+                        model_name,
+                        task.name,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        average.error or "",
+                    ]
                 )
                 continue
 
@@ -272,6 +292,7 @@ def _write_details_sheet(
                         if detail.output_tokens is not None
                         else "",
                         _round_or_blank(detail.tokens_per_second),
+                        detail.output_words if detail.output_words is not None else "",
                         detail.answer,
                         detail.error or "",
                     ]
@@ -284,8 +305,9 @@ def _write_details_sheet(
         "D": 16,
         "E": 16,
         "F": 16,
-        "G": 80,
+        "G": 16,
         "H": 80,
+        "I": 80,
     }
     for column_letter, width in column_widths.items():
         sheet.column_dimensions[column_letter].width = width

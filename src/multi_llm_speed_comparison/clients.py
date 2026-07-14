@@ -153,6 +153,7 @@ class OpenAICompatibleResponsesClient:
         response = self._client.responses.create(
             model=self.model,
             input=prompt,
+            reasoning={"effort": "none"},  # none | minimal | low | medium | high | xhigh
         )
         data = response.model_dump()
         return ModelResponse(
