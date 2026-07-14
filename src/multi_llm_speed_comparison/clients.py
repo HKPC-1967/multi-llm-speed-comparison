@@ -8,6 +8,7 @@ from typing import Any, Protocol
 from urllib.parse import urlencode
 
 import requests
+from openai import OpenAI
 
 from multi_llm_speed_comparison.config import TEMPERATURE, ModelConfig
 
@@ -35,6 +36,8 @@ def build_client(config: ModelConfig) -> ModelClient:
         return AzureFoundryClient(config)
     if config.provider == "openai_compatible":
         return OpenAICompatibleClient(config)
+    if config.provider == "openai_compatible_responses":
+        return OpenAICompatibleResponsesClient(config)
 
     msg = f"Unsupported provider '{config.provider}' for {config.display_name}."
     raise ValueError(msg)
@@ -61,6 +64,8 @@ class BaseRequestsClient:
         )
         response.raise_for_status()
         data = response.json()
+        # print(f"Request url: {url}")
+        # print(f"Received response data: {data}")
         return ModelResponse(
             text=_extract_text(data),
             output_tokens=_extract_output_tokens(data),
@@ -75,6 +80,7 @@ class AzureOpenAIClient(BaseRequestsClient):
         url = (
             f"{self.endpoint}/openai/deployments/{self.model}/chat/completions?{query}"
         )
+        # print(f"AzureOpenAIClient url: {url}, api_key: {self.api_key}")
         return self._post(
             url=url,
             headers={"api-key": self.api_key, "Content-Type": "application/json"},
@@ -131,6 +137,30 @@ class OpenAICompatibleClient(BaseRequestsClient):
         )
 
 
+class OpenAICompatibleResponsesClient:
+    """OpenAI-compatible Responses API client using the OpenAI SDK."""
+
+    def __init__(self, config: ModelConfig) -> None:
+        self.config = config
+        self.model = _env(config.model_env)
+        self._client = OpenAI(
+            base_url=_env(config.endpoint_env).rstrip("/"),
+            api_key=_build_openai_api_key(config),
+            timeout=DEFAULT_TIMEOUT_SECONDS,
+        )
+
+    def complete(self, prompt: str) -> ModelResponse:
+        response = self._client.responses.create(
+            model=self.model,
+            input=prompt,
+        )
+        data = response.model_dump()
+        return ModelResponse(
+            text=_extract_text(data),
+            output_tokens=_extract_output_tokens(data),
+        )
+
+
 def _chat_payload(prompt: str, temperature: float) -> dict[str, Any]:
     return {
         "messages": [
@@ -140,6 +170,7 @@ def _chat_payload(prompt: str, temperature: float) -> dict[str, Any]:
             }
         ],
         "temperature": temperature,
+        # "reasoning_effort": "low",  
     }
 
 
@@ -149,6 +180,18 @@ def _responses_payload(model: str, prompt: str, temperature: float) -> dict[str,
         "input": prompt,
         "temperature": temperature,
     }
+
+
+def _build_openai_api_key(config: ModelConfig) -> str | Any:
+    api_key = _env(config.api_key_env)
+    if api_key.lower() == "azure_default_credential":
+        from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+
+        return get_bearer_token_provider(
+            DefaultAzureCredential(),
+            "https://ai.azure.com/.default",
+        )
+    return api_key
 
 
 def _env(name: str | None) -> str:

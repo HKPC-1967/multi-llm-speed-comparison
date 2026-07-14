@@ -77,3 +77,4 @@ Current provider strings:
 - `azure_foundry`: Azure AI Foundry chat completions URL.
 - `azure_foundry_openai`: Azure AI Foundry OpenAI Responses API URL.
 - `openai_compatible`: OpenAI-compatible chat completions URL.
+- `openai_compatible_responses`: OpenAI-compatible Responses API URL via the OpenAI SDK. Set the API key env value to `azure_default_credential` to use `DefaultAzureCredential` instead of a static key.

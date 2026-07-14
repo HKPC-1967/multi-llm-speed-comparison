@@ -22,6 +22,7 @@ This project benchmarks LLM response latency and output token throughput across 
 - `AzureFoundryClient`: Azure AI Foundry chat completions URL.
 - `AzureFoundryOpenAIClient`: Azure AI Foundry OpenAI Responses API URL, currently used by GPT-5.4 Mini.
 - `OpenAICompatibleClient`: OpenAI-compatible chat completions URL, currently used by Alibaba Cloud DashScope.
+- `OpenAICompatibleResponsesClient`: OpenAI-compatible Responses API URL via the OpenAI SDK.
 
 ## Architecture Rules
 
